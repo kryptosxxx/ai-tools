@@ -70,19 +70,19 @@
   .when-table tr:last-child td { border-bottom: none; }
   .when-table tr:hover td { background: var(--surface); }
   .tool-badge { display: inline-block; font-family: var(--mono); font-size: 0.7rem; padding: 2px 8px; border-radius: 6px; font-weight: 700; }
- 
+
   footer { text-align: center; margin-top: 3rem; font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
 </style>
 </head>
 <body>
- 
+
 <header>
   <h1>AI Stack — Command Reference</h1>
   <p>// UFO³ · OpenCode · Hermes · n8n</p>
 </header>
- 
+
 <div class="grid">
- 
+
   <!-- UFO -->
   <div class="card ufo-card">
     <div class="card-header">
@@ -133,7 +133,7 @@
       </div>
     </div>
   </div>
- 
+
   <!-- OpenCode -->
   <div class="card oc-card">
     <div class="card-header">
@@ -180,7 +180,7 @@
       </div>
     </div>
   </div>
- 
+
   <!-- Hermes -->
   <div class="card hm-card">
     <div class="card-header">
@@ -227,7 +227,7 @@
       </div>
     </div>
   </div>
- 
+
   <!-- n8n -->
   <div class="card n8-card">
     <div class="card-header">
@@ -259,8 +259,8 @@
       </div>
     </div>
   </div>
- 
- 
+
+
   <!-- DeepSeek -->
   <div class="card ds-card">
     <div class="card-header">
@@ -272,20 +272,17 @@
       </div>
     </div>
     <div class="card-body">
-      <div class="section-title">Step 1 — download the model (once)</div>
-      <div class="cmd-block">
-        <code>ollama pull deepseek-r1:7b</code>
-        <button class="copy-btn" data-copy="ollama pull deepseek-r1:7b">copy</button>
-      </div>
-      <div class="section-title">Step 2 — run it</div>
+      <div class="section-title">How to run</div>
       <div class="cmd-block">
         <code>ollama run deepseek-r1:7b</code>
         <button class="copy-btn" data-copy="ollama run deepseek-r1:7b">copy</button>
       </div>
-      <div class="section-title">Model sizes — pick one</div>
-      <div class="cmd-block"><code>ollama pull deepseek-r1:1.5b  — ~1GB — very light</code><button class="copy-btn" data-copy="ollama pull deepseek-r1:1.5b">copy</button></div>
-      <div class="cmd-block"><code>ollama pull deepseek-r1:7b    — ~4GB — best for your PC ✅</code><button class="copy-btn" data-copy="ollama pull deepseek-r1:7b">copy</button></div>
-      <div class="cmd-block"><code>ollama pull deepseek-r1:14b   — ~8GB — heavy but possible</code><button class="copy-btn" data-copy="ollama pull deepseek-r1:14b">copy</button></div>
+      <div class="section-title">Example tasks (type inside deepseek)</div>
+      <div class="cmd-block"><code>explain how neural networks work step by step</code><button class="copy-btn" data-copy="explain how neural networks work step by step">copy</button></div>
+      <div class="cmd-block"><code>write a python script that sorts a list of numbers</code><button class="copy-btn" data-copy="write a python script that sorts a list of numbers">copy</button></div>
+      <div class="cmd-block"><code>solve this math problem step by step: [paste problem]</code><button class="copy-btn" data-copy="solve this math problem step by step: ">copy</button></div>
+      <div class="cmd-block"><code>find the bug in this code: [paste code]</code><button class="copy-btn" data-copy="find the bug in this code: ">copy</button></div>
+      <div class="cmd-block"><code>explain this concept like I am 10 years old: [topic]</code><button class="copy-btn" data-copy="explain this concept like I am 10 years old: ">copy</button></div>
       <div class="section-title">What it does</div>
       <div class="uses">
         <div class="use-item"><span class="use-dot"></span>Runs 100% locally — free forever</div>
@@ -295,9 +292,9 @@
       </div>
     </div>
   </div>
- 
+
 </div>
- 
+
 <!-- When to use table -->
 <div class="when-section">
   <h2>🤔 Which tool should I use?</h2>
@@ -358,16 +355,16 @@
     </tbody>
   </table>
 </div>
- 
+
 <footer style="margin-top:2rem">open this file in your browser · copy buttons work from the file</footer>
- 
+
 <script>
   // Attach click handlers to all copy buttons
   document.querySelectorAll('.copy-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
       var text = btn.getAttribute('data-copy');
       var original = btn.textContent;
- 
+
       // Try modern clipboard API first
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(text).then(function() {
@@ -380,7 +377,7 @@
       }
     });
   });
- 
+
   // Fallback for non-secure contexts (opening file directly)
   function fallback(btn, text, original) {
     var ta = document.createElement('textarea');
