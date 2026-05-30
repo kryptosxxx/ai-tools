@@ -70,19 +70,19 @@
   .when-table tr:last-child td { border-bottom: none; }
   .when-table tr:hover td { background: var(--surface); }
   .tool-badge { display: inline-block; font-family: var(--mono); font-size: 0.7rem; padding: 2px 8px; border-radius: 6px; font-weight: 700; }
-
+ 
   footer { text-align: center; margin-top: 3rem; font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
 </style>
 </head>
 <body>
-
+ 
 <header>
   <h1>AI Stack — Command Reference</h1>
   <p>// UFO³ · OpenCode · Hermes · n8n</p>
 </header>
-
+ 
 <div class="grid">
-
+ 
   <!-- UFO -->
   <div class="card ufo-card">
     <div class="card-header">
@@ -133,7 +133,7 @@
       </div>
     </div>
   </div>
-
+ 
   <!-- OpenCode -->
   <div class="card oc-card">
     <div class="card-header">
@@ -180,7 +180,7 @@
       </div>
     </div>
   </div>
-
+ 
   <!-- Hermes -->
   <div class="card hm-card">
     <div class="card-header">
@@ -227,7 +227,7 @@
       </div>
     </div>
   </div>
-
+ 
   <!-- n8n -->
   <div class="card n8-card">
     <div class="card-header">
@@ -259,8 +259,8 @@
       </div>
     </div>
   </div>
-
-
+ 
+ 
   <!-- DeepSeek -->
   <div class="card ds-card">
     <div class="card-header">
@@ -292,9 +292,9 @@
       </div>
     </div>
   </div>
-
+ 
 </div>
-
+ 
 <!-- When to use table -->
 <div class="when-section">
   <h2>🤔 Which tool should I use?</h2>
@@ -355,16 +355,16 @@
     </tbody>
   </table>
 </div>
-
+ 
 <footer style="margin-top:2rem">open this file in your browser · copy buttons work from the file</footer>
-
+ 
 <script>
   // Attach click handlers to all copy buttons
   document.querySelectorAll('.copy-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
       var text = btn.getAttribute('data-copy');
       var original = btn.textContent;
-
+ 
       // Try modern clipboard API first
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(text).then(function() {
@@ -377,7 +377,7 @@
       }
     });
   });
-
+ 
   // Fallback for non-secure contexts (opening file directly)
   function fallback(btn, text, original) {
     var ta = document.createElement('textarea');
@@ -403,3 +403,4 @@
 </script>
 </body>
 </html>
+ 
