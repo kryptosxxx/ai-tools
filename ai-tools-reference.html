@@ -15,6 +15,7 @@
     --opencode: #3ecf8e; --opencode-bg: #0a1f17; --opencode-border: #123324;
     --hermes: #f5a623; --hermes-bg: #1e1508; --hermes-border: #332208;
     --n8n: #a78bfa; --n8n-bg: #130f1e; --n8n-border: #221a36;
+    --ds: #60a5fa; --ds-bg: #0a1628; --ds-border: #0f2442;
     --mono: 'JetBrains Mono', monospace; --sans: 'Syne', sans-serif;
   }
   body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; padding: 2.5rem 1.5rem; }
@@ -57,6 +58,10 @@
   .n8-card .card-name { color: var(--n8n); }
   .n8-card .where-tag { background: var(--n8n-bg); color: var(--n8n); border: 1px solid var(--n8n-border); }
   .n8-card .use-dot { background: var(--n8n); }
+  .ds-card .card-icon { background: var(--ds-bg); color: var(--ds); }
+  .ds-card .card-name { color: var(--ds); }
+  .ds-card .where-tag { background: var(--ds-bg); color: var(--ds); border: 1px solid var(--ds-border); }
+  .ds-card .use-dot { background: var(--ds); }
   .when-section { max-width: 1100px; margin: 2rem auto 0; }
   .when-section h2 { font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 1rem; letter-spacing: -0.02em; }
   .when-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
@@ -65,19 +70,19 @@
   .when-table tr:last-child td { border-bottom: none; }
   .when-table tr:hover td { background: var(--surface); }
   .tool-badge { display: inline-block; font-family: var(--mono); font-size: 0.7rem; padding: 2px 8px; border-radius: 6px; font-weight: 700; }
-
+ 
   footer { text-align: center; margin-top: 3rem; font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
 </style>
 </head>
 <body>
-
+ 
 <header>
   <h1>AI Stack — Command Reference</h1>
   <p>// UFO³ · OpenCode · Hermes · n8n</p>
 </header>
-
+ 
 <div class="grid">
-
+ 
   <!-- UFO -->
   <div class="card ufo-card">
     <div class="card-header">
@@ -128,7 +133,7 @@
       </div>
     </div>
   </div>
-
+ 
   <!-- OpenCode -->
   <div class="card oc-card">
     <div class="card-header">
@@ -175,7 +180,7 @@
       </div>
     </div>
   </div>
-
+ 
   <!-- Hermes -->
   <div class="card hm-card">
     <div class="card-header">
@@ -222,7 +227,7 @@
       </div>
     </div>
   </div>
-
+ 
   <!-- n8n -->
   <div class="card n8-card">
     <div class="card-header">
@@ -254,9 +259,45 @@
       </div>
     </div>
   </div>
-
+ 
+ 
+  <!-- DeepSeek -->
+  <div class="card ds-card">
+    <div class="card-header">
+      <div class="card-icon">🧠</div>
+      <div>
+        <div class="card-name">DeepSeek R1</div>
+        <div class="card-desc">Local AI model — reasoning and coding</div>
+        <span class="where-tag">⚡ Ubuntu terminal (WSL)</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="section-title">Step 1 — download the model (once)</div>
+      <div class="cmd-block">
+        <code>ollama pull deepseek-r1:7b</code>
+        <button class="copy-btn" data-copy="ollama pull deepseek-r1:7b">copy</button>
+      </div>
+      <div class="section-title">Step 2 — run it</div>
+      <div class="cmd-block">
+        <code>ollama run deepseek-r1:7b</code>
+        <button class="copy-btn" data-copy="ollama run deepseek-r1:7b">copy</button>
+      </div>
+      <div class="section-title">Model sizes — pick one</div>
+      <div class="cmd-block"><code>ollama pull deepseek-r1:1.5b  — ~1GB — very light</code><button class="copy-btn" data-copy="ollama pull deepseek-r1:1.5b">copy</button></div>
+      <div class="cmd-block"><code>ollama pull deepseek-r1:7b    — ~4GB — best for your PC ✅</code><button class="copy-btn" data-copy="ollama pull deepseek-r1:7b">copy</button></div>
+      <div class="cmd-block"><code>ollama pull deepseek-r1:14b   — ~8GB — heavy but possible</code><button class="copy-btn" data-copy="ollama pull deepseek-r1:14b">copy</button></div>
+      <div class="section-title">What it does</div>
+      <div class="uses">
+        <div class="use-item"><span class="use-dot"></span>Runs 100% locally — free forever</div>
+        <div class="use-item"><span class="use-dot"></span>Excellent at math, logic and coding</div>
+        <div class="use-item"><span class="use-dot"></span>No internet needed once downloaded</div>
+        <div class="use-item"><span class="use-dot"></span>Works with Hermes and Ollama</div>
+      </div>
+    </div>
+  </div>
+ 
 </div>
-
+ 
 <!-- When to use table -->
 <div class="when-section">
   <h2>🤔 Which tool should I use?</h2>
@@ -317,16 +358,16 @@
     </tbody>
   </table>
 </div>
-
+ 
 <footer style="margin-top:2rem">open this file in your browser · copy buttons work from the file</footer>
-
+ 
 <script>
   // Attach click handlers to all copy buttons
   document.querySelectorAll('.copy-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
       var text = btn.getAttribute('data-copy');
       var original = btn.textContent;
-
+ 
       // Try modern clipboard API first
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(text).then(function() {
@@ -339,7 +380,7 @@
       }
     });
   });
-
+ 
   // Fallback for non-secure contexts (opening file directly)
   function fallback(btn, text, original) {
     var ta = document.createElement('textarea');
