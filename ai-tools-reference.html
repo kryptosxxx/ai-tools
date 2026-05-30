@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Stack — Command Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0d0d0f; --surface: #141416; --card: #1a1a1e;
+    --border: #2a2a30; --border-hover: #3a3a44; --text: #f0f0f4;
+    --muted: #6b6b7a; --hint: #3a3a44;
+    --ufo: #4f8ef7; --ufo-bg: #0f1a2e; --ufo-border: #1a2d4a;
+    --opencode: #3ecf8e; --opencode-bg: #0a1f17; --opencode-border: #123324;
+    --hermes: #f5a623; --hermes-bg: #1e1508; --hermes-border: #332208;
+    --n8n: #a78bfa; --n8n-bg: #130f1e; --n8n-border: #221a36;
+    --mono: 'JetBrains Mono', monospace; --sans: 'Syne', sans-serif;
+  }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; padding: 2.5rem 1.5rem; }
+  header { text-align: center; margin-bottom: 3rem; }
+  header h1 { font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.03em; background: linear-gradient(135deg, #f0f0f4 0%, #6b6b7a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.5rem; }
+  header p { color: var(--muted); font-size: 0.95rem; font-family: var(--mono); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem; max-width: 1100px; margin: 0 auto; }
+  .card { background: var(--card); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; transition: border-color 0.2s; }
+  .card:hover { border-color: var(--border-hover); }
+  .card-header { padding: 1.25rem 1.25rem 1rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+  .card-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+  .card-name { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; }
+  .card-desc { font-size: 0.78rem; font-family: var(--mono); margin-top: 2px; opacity: 0.6; }
+  .where-tag { display: inline-flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 0.7rem; padding: 3px 8px; border-radius: 6px; margin-top: 6px; }
+  .card-body { padding: 1rem 1.25rem; }
+  .section-title { font-family: var(--mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 1rem 0 0.5rem; }
+  .section-title:first-child { margin-top: 0; }
+  .cmd-block { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; margin-bottom: 6px; display: flex; align-items: flex-start; gap: 10px; }
+  .cmd-block code { flex: 1; font-family: var(--mono); font-size: 0.78rem; color: var(--text); word-break: break-all; line-height: 1.5; }
+  .copy-btn { flex-shrink: 0; background: transparent; border: 1px solid var(--border); border-radius: 6px; padding: 4px 9px; font-family: var(--mono); font-size: 0.68rem; color: var(--muted); cursor: pointer; transition: all 0.15s; white-space: nowrap; margin-top: 1px; user-select: none; }
+  .copy-btn:hover { background: var(--hint); color: var(--text); border-color: var(--border-hover); }
+  .copy-btn.ok { color: #3ecf8e; border-color: #3ecf8e44; background: #0a1f1744; }
+  .copy-btn.err { color: #f87171; border-color: #f8717144; }
+  .uses { display: flex; flex-direction: column; gap: 5px; }
+  .use-item { display: flex; align-items: flex-start; gap: 8px; font-size: 0.82rem; color: var(--muted); line-height: 1.4; }
+  .use-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+  .ufo-card .card-icon { background: var(--ufo-bg); color: var(--ufo); }
+  .ufo-card .card-name { color: var(--ufo); }
+  .ufo-card .where-tag { background: var(--ufo-bg); color: var(--ufo); border: 1px solid var(--ufo-border); }
+  .ufo-card .use-dot { background: var(--ufo); }
+  .oc-card .card-icon { background: var(--opencode-bg); color: var(--opencode); }
+  .oc-card .card-name { color: var(--opencode); }
+  .oc-card .where-tag { background: var(--opencode-bg); color: var(--opencode); border: 1px solid var(--opencode-border); }
+  .oc-card .use-dot { background: var(--opencode); }
+  .hm-card .card-icon { background: var(--hermes-bg); color: var(--hermes); }
+  .hm-card .card-name { color: var(--hermes); }
+  .hm-card .where-tag { background: var(--hermes-bg); color: var(--hermes); border: 1px solid var(--hermes-border); }
+  .hm-card .use-dot { background: var(--hermes); }
+  .n8-card .card-icon { background: var(--n8n-bg); color: var(--n8n); }
+  .n8-card .card-name { color: var(--n8n); }
+  .n8-card .where-tag { background: var(--n8n-bg); color: var(--n8n); border: 1px solid var(--n8n-border); }
+  .n8-card .use-dot { background: var(--n8n); }
+  .when-section { max-width: 1100px; margin: 2rem auto 0; }
+  .when-section h2 { font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 1rem; letter-spacing: -0.02em; }
+  .when-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
+  .when-table th { font-family: var(--mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 10px 16px; text-align: left; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .when-table td { font-size: 0.83rem; padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--muted); vertical-align: middle; }
+  .when-table tr:last-child td { border-bottom: none; }
+  .when-table tr:hover td { background: var(--surface); }
+  .tool-badge { display: inline-block; font-family: var(--mono); font-size: 0.7rem; padding: 2px 8px; border-radius: 6px; font-weight: 700; }
+
+  footer { text-align: center; margin-top: 3rem; font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AI Stack — Command Reference</h1>
+  <p>// UFO³ · OpenCode · Hermes · n8n</p>
+</header>
+
+<div class="grid">
+
+  <!-- UFO -->
+  <div class="card ufo-card">
+    <div class="card-header">
+      <div class="card-icon">🖥</div>
+      <div>
+        <div class="card-name">UFO³</div>
+        <div class="card-desc">Windows robot — controls any app on screen</div>
+        <span class="where-tag">⚡ Windows PowerShell (as Admin)</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="section-title">Step 1 — start UFO (run this once)</div>
+      <div class="cmd-block">
+        <code id="ufo-start">cd C:\Windows\system32\UFO; py -3.11 -m ufo</code>
+        <button class="copy-btn" data-copy="cd C:\Windows\system32\UFO; py -3.11 -m ufo">copy</button>
+      </div>
+      <div class="section-title">Step 2 — when UFO asks "Your request:" type one of these</div>
+      <div class="cmd-block">
+        <code>open notepad and type hello world</code>
+        <button class="copy-btn" data-copy="open notepad and type hello world">copy</button>
+      </div>
+      <div class="cmd-block">
+        <code>open excel and create a budget table</code>
+        <button class="copy-btn" data-copy="open excel and create a budget table">copy</button>
+      </div>
+      <div class="cmd-block">
+        <code>open word and write a business proposal for a coffee shop</code>
+        <button class="copy-btn" data-copy="open word and write a business proposal for a coffee shop">copy</button>
+      </div>
+      <div class="cmd-block">
+        <code>open Discord and send a message to [name] saying hello</code>
+        <button class="copy-btn" data-copy="open Discord and send a message to [name] saying hello">copy</button>
+      </div>
+      <div class="cmd-block">
+        <code>search google for AI news today</code>
+        <button class="copy-btn" data-copy="search google for AI news today">copy</button>
+      </div>
+      <div class="cmd-block">
+        <code>organise my downloads folder by file type</code>
+        <button class="copy-btn" data-copy="organise my downloads folder by file type">copy</button>
+      </div>
+      <div class="section-title">What it does</div>
+      <div class="uses">
+        <div class="use-item"><span class="use-dot"></span>Clicks buttons in any Windows app</div>
+        <div class="use-item"><span class="use-dot"></span>Types text into any app automatically</div>
+        <div class="use-item"><span class="use-dot"></span>Takes screenshots to see your screen</div>
+        <div class="use-item"><span class="use-dot"></span>Best for apps with no API (old software, desktop apps)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OpenCode -->
+  <div class="card oc-card">
+    <div class="card-header">
+      <div class="card-icon">💻</div>
+      <div>
+        <div class="card-name">OpenCode</div>
+        <div class="card-desc">AI developer — writes and fixes code</div>
+        <span class="where-tag">⚡ Ubuntu terminal (WSL)</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="section-title">Step 1 — start OpenCode</div>
+      <div class="cmd-block">
+        <code>export PATH="$PATH:/home/aleko/.hermes/node/bin" && opencode</code>
+        <button class="copy-btn" data-copy='export PATH="$PATH:/home/aleko/.hermes/node/bin" && opencode'>copy</button>
+      </div>
+      <div class="section-title">Step 2 — type one of these inside opencode</div>
+      <div class="cmd-block">
+        <code>build me a simple portfolio website</code>
+        <button class="copy-btn" data-copy="build me a simple portfolio website">copy</button>
+      </div>
+      <div class="cmd-block">
+        <code>fix all the bugs in this file</code>
+        <button class="copy-btn" data-copy="fix all the bugs in this file">copy</button>
+      </div>
+      <div class="cmd-block">
+        <code>build a chrome extension that blocks youtube</code>
+        <button class="copy-btn" data-copy="build a chrome extension that blocks youtube">copy</button>
+      </div>
+      <div class="cmd-block">
+        <code>write a python script that renames all my files</code>
+        <button class="copy-btn" data-copy="write a python script that renames all my files">copy</button>
+      </div>
+      <div class="cmd-block">
+        <code>explain what this code does line by line</code>
+        <button class="copy-btn" data-copy="explain what this code does line by line">copy</button>
+      </div>
+      <div class="section-title">What it does</div>
+      <div class="uses">
+        <div class="use-item"><span class="use-dot"></span>Builds entire apps from scratch</div>
+        <div class="use-item"><span class="use-dot"></span>Fixes broken code automatically</div>
+        <div class="use-item"><span class="use-dot"></span>Writes in any programming language</div>
+        <div class="use-item"><span class="use-dot"></span>Reads and understands your codebase</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hermes -->
+  <div class="card hm-card">
+    <div class="card-header">
+      <div class="card-icon">🤖</div>
+      <div>
+        <div class="card-name">Hermes</div>
+        <div class="card-desc">Local AI assistant — research and tasks</div>
+        <span class="where-tag">⚡ Ubuntu terminal (WSL)</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="section-title">Step 1 — start Hermes</div>
+      <div class="cmd-block">
+        <code>source ~/.bashrc && hermes</code>
+        <button class="copy-btn" data-copy="source ~/.bashrc && hermes">copy</button>
+      </div>
+      <div class="section-title">Step 2 — type one of these inside hermes</div>
+      <div class="cmd-block">
+        <code>search the web for top 10 AI tools in 2026 and write a report</code>
+        <button class="copy-btn" data-copy="search the web for top 10 AI tools in 2026 and write a report">copy</button>
+      </div>
+      <div class="cmd-block">
+        <code>find all PDF files on my computer and list them</code>
+        <button class="copy-btn" data-copy="find all PDF files on my computer and list them">copy</button>
+      </div>
+      <div class="cmd-block">
+        <code>write a business plan for a coffee shop</code>
+        <button class="copy-btn" data-copy="write a business plan for a coffee shop">copy</button>
+      </div>
+      <div class="cmd-block">
+        <code>research my competitors and compare their prices</code>
+        <button class="copy-btn" data-copy="research my competitors and compare their prices">copy</button>
+      </div>
+      <div class="cmd-block">
+        <code>summarise this YouTube video: [paste URL here]</code>
+        <button class="copy-btn" data-copy="summarise this YouTube video: ">copy</button>
+      </div>
+      <div class="section-title">What it does</div>
+      <div class="uses">
+        <div class="use-item"><span class="use-dot"></span>Browses the web and researches anything</div>
+        <div class="use-item"><span class="use-dot"></span>Searches and manages files on your PC</div>
+        <div class="use-item"><span class="use-dot"></span>Runs 90+ built-in skills</div>
+        <div class="use-item"><span class="use-dot"></span>Works 100% locally and privately</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- n8n -->
+  <div class="card n8-card">
+    <div class="card-header">
+      <div class="card-icon">⚙</div>
+      <div>
+        <div class="card-name">n8n</div>
+        <div class="card-desc">The orchestrator — runs workflows automatically</div>
+        <span class="where-tag">⚡ Ubuntu terminal → then browser</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="section-title">Step 1 — start n8n</div>
+      <div class="cmd-block">
+        <code>docker run -it --rm --name n8n -p 5678:5678 -v n8n_data:/home/node/.n8n docker.n8n.io/n8nio/n8n</code>
+        <button class="copy-btn" data-copy="docker run -it --rm --name n8n -p 5678:5678 -v n8n_data:/home/node/.n8n docker.n8n.io/n8nio/n8n">copy</button>
+      </div>
+      <div class="section-title">Step 2 — open this in your browser</div>
+      <div class="cmd-block">
+        <code>http://localhost:5678</code>
+        <button class="copy-btn" data-copy="http://localhost:5678">copy</button>
+      </div>
+      <div class="section-title">What it does</div>
+      <div class="uses">
+        <div class="use-item"><span class="use-dot"></span>Automates emails, files, tasks 24/7</div>
+        <div class="use-item"><span class="use-dot"></span>Connects 400+ apps together</div>
+        <div class="use-item"><span class="use-dot"></span>Runs on a schedule automatically</div>
+        <div class="use-item"><span class="use-dot"></span>Triggers UFO, Hermes and OpenCode</div>
+        <div class="use-item"><span class="use-dot"></span>Works while your PC is on</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- When to use table -->
+<div class="when-section">
+  <h2>🤔 Which tool should I use?</h2>
+  <table class="when-table">
+    <thead>
+      <tr>
+        <th>Situation</th>
+        <th>Use this</th>
+        <th>Why</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>App has an API (Gmail, Discord, Slack, Notion...)</td>
+        <td><span class="tool-badge" style="background:#221a36;color:#a78bfa;">n8n</span></td>
+        <td>Proper connection, runs 24/7</td>
+      </tr>
+      <tr>
+        <td>Old desktop software with no API</td>
+        <td><span class="tool-badge" style="background:#0f1a2e;color:#4f8ef7;">UFO³</span></td>
+        <td>Only thing that can control it</td>
+      </tr>
+      <tr>
+        <td>Write, fix or build code</td>
+        <td><span class="tool-badge" style="background:#0a1f17;color:#3ecf8e;">OpenCode</span></td>
+        <td>Reads your codebase and edits it</td>
+      </tr>
+      <tr>
+        <td>Research something on the web</td>
+        <td><span class="tool-badge" style="background:#1e1508;color:#f5a623;">Hermes</span></td>
+        <td>Browses web and writes reports locally</td>
+      </tr>
+      <tr>
+        <td>Automate something on a schedule</td>
+        <td><span class="tool-badge" style="background:#221a36;color:#a78bfa;">n8n</span></td>
+        <td>Built for scheduled automation</td>
+      </tr>
+      <tr>
+        <td>Control a browser or website</td>
+        <td><span class="tool-badge" style="background:#0f1a2e;color:#4f8ef7;">UFO³</span></td>
+        <td>Can click anything on any website</td>
+      </tr>
+      <tr>
+        <td>Send messages on Discord, Slack automatically</td>
+        <td><span class="tool-badge" style="background:#221a36;color:#a78bfa;">n8n</span></td>
+        <td>Has proper connectors for messaging apps</td>
+      </tr>
+      <tr>
+        <td>Something private that stays on your PC</td>
+        <td><span class="tool-badge" style="background:#1e1508;color:#f5a623;">Hermes</span></td>
+        <td>100% local, nothing sent to cloud</td>
+      </tr>
+      <tr>
+        <td>Use all tools together automatically</td>
+        <td><span class="tool-badge" style="background:#221a36;color:#a78bfa;">n8n</span></td>
+        <td>n8n orchestrates all the others</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<footer style="margin-top:2rem">open this file in your browser · copy buttons work from the file</footer>
+
+<script>
+  // Attach click handlers to all copy buttons
+  document.querySelectorAll('.copy-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var text = btn.getAttribute('data-copy');
+      var original = btn.textContent;
+
+      // Try modern clipboard API first
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(function() {
+          btn.textContent = 'copied ✓';
+          btn.classList.add('ok');
+          setTimeout(function() { btn.textContent = original; btn.classList.remove('ok'); }, 1500);
+        }).catch(function() { fallback(btn, text, original); });
+      } else {
+        fallback(btn, text, original);
+      }
+    });
+  });
+
+  // Fallback for non-secure contexts (opening file directly)
+  function fallback(btn, text, original) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    ta.style.top = '-9999px';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try {
+      document.execCommand('copy');
+      btn.textContent = 'copied ✓';
+      btn.classList.add('ok');
+      setTimeout(function() { btn.textContent = original; btn.classList.remove('ok'); }, 1500);
+    } catch(e) {
+      btn.textContent = 'failed ✗';
+      btn.classList.add('err');
+      setTimeout(function() { btn.textContent = original; btn.classList.remove('err'); }, 1500);
+    }
+    document.body.removeChild(ta);
+  }
+</script>
+</body>
+</html>
